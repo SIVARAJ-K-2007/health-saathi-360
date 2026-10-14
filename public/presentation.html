@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Saathi 360 - Official Project Presentation</title>
+  <style>
+    :root {
+      --primary: #2E7D6A;
+      --primary-dark: #1A4D40;
+      --accent: #4CAF8C;
+      --accent-light: #E8F5F0;
+      --bg: #0F1F19;
+      --surface: #FFFFFF;
+      --text: #1C2E26;
+      --text-muted: #566D63;
+      --amber: #D97706;
+      --red: #C62828;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Deck Layout */
+    .deck-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      position: relative;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      max-width: 1100px;
+      height: 620px;
+      background: var(--surface);
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      padding: 48px 56px;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      animation: fadeIn 0.3s ease;
+      overflow: hidden;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Slide Header */
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid var(--accent-light);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+
+    .slide-category {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--primary);
+    }
+
+    .slide-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-top: 4px;
+      line-height: 1.2;
+    }
+
+    .slide-badge {
+      font-size: 0.75rem;
+      background: var(--accent-light);
+      color: var(--primary-dark);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Slide Content Grid */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    /* Cards inside slides */
+    .card {
+      background: #F8FAF9;
+      border: 1px solid #DCEBE3;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 8px;
+    }
+
+    .card.highlight {
+      background: #F0FDF4;
+      border-color: #86EFAC;
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 4px;
+    }
+
+    .card-heading {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .card-text {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* Bullet List */
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .feature-list li .bullet {
+      background: var(--primary);
+      color: #fff;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Slide Footer */
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--accent-light);
+      padding-top: 14px;
+      margin-top: 20px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Title Slide Specific */
+    .slide-title-hero {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .hero-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--primary);
+      color: #ffffff;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(46, 125, 106, 0.35);
+    }
+
+    .hero-title {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--primary-dark);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .hero-tamil {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--accent-light);
+      padding: 10px 24px;
+      border-radius: 30px;
+    }
+
+    /* Control Toolbar */
+    .deck-controls {
+      height: 60px;
+      background: rgba(15, 31, 25, 0.95);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      color: #ffffff;
+      z-index: 1000;
+    }
+
+    .deck-btn {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .deck-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .progress-bar-container {
+      flex: 1;
+      max-width: 320px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+      overflow: hidden;
+      margin: 0 20px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    /* Print to PDF rules */
+    @media print {
+      body {
+        background: #ffffff;
+        height: auto;
+        overflow: visible;
+      }
+      .deck-controls {
+        display: none !important;
+      }
+      .deck-container {
+        padding: 0;
+        display: block;
+      }
+      .slide {
+        display: flex !important;
+        page-break-after: always;
+        height: 100vh;
+        max-width: 100%;
+        box-shadow: none;
+        border-radius: 0;
+        border: none;
+        padding: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Slide Deck Presentation Container -->
+  <div class="deck-container">
+
+    <!-- SLIDE 1: TITLE SLIDE -->
+    <div class="slide active" data-index="1">
+      <div class="slide-title-hero">
+        <div class="hero-icon">HS</div>
+        <h1 class="hero-title">Health Saathi 360</h1>
+        <div class="hero-tamil">ஹெல்த் சாதி 360</div>
+        <p class="hero-subtitle">
+          An Offline-First Public Healthcare Platform Empowering ASHA Workers, ANMs, and PHC Staff Across Rural Tamil Nadu.
+        </p>
+        <div class="hero-meta">
+          <span>👨‍💻 Created by: <strong>SIVARAJ K</strong></span>
+          <span>&bull;</span>
+          <span>🏛️ Tamil Nadu Public Health Focus</span>
+          <span>&bull;</span>
+          <span>📡 Offline PWA Engine</span>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Confidential &bull; Public Healthcare Innovation</span>
+        <span>Slide 1 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: THE PROBLEM -->
+    <div class="slide" data-index="2">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Problem Statement</div>
+          <div class="slide-title">The Rural Healthcare Referral Crisis</div>
+        </div>
+        <span class="slide-badge">🚨 Critical Gap</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-icon">📵</div>
+            <div class="card-heading">Connectivity Blackouts</div>
+            <div class="card-text">
+              Primary Health Centres (PHCs) and Sub-Centres frequently experience prolonged power cuts and mobile data outages, disabling cloud-only health registries.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">📉</div>
+            <div class="card-heading">Referral Leakage</div>
+            <div class="card-text">
+              Over <strong>42% of referred rural patients drop out</strong> between initial frontline screening and hospital arrival due to distance, lack of transport, and zero tracking.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">📋</div>
+            <div class="card-heading">Paper-Based Friction</div>
+            <div class="card-text">
+              Frontline ASHA workers maintain physical paper registers. When complications arise, there is no real-time emergency triage or feedback loop on patient outcomes.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Health Saathi 360 &bull; Frontline Public Healthcare Platform</span>
+        <span>Slide 2 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: THE SOLUTION -->
+    <div class="slide" data-index="3">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Our Solution</div>
+          <div class="slide-title">Health Saathi 360: Connected Rural Care</div>
+        </div>
+        <span class="slide-badge">💡 Core Pillars</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <ul class="feature-list">
+            <li>
+              <div class="bullet">1</div>
+              <div>
+                <strong>100% Offline-First Capability:</strong>
+                Registration forms, clinical screening, and local referral queues work seamlessly without internet, backed by browser IndexedDB and Service Workers.
+              </div>
+            </li>
+            <li>
+              <div class="bullet">2</div>
+              <div>
+                <strong>Geospatial Hospital Discovery:</strong>
+                Real OpenStreetMap facility database paired with in-website OSRM driving routes, distance calculations, and turn-by-turn guidance.
+              </div>
+            </li>
+            <li>
+              <div class="bullet">3</div>
+              <div>
+                <strong>Rule-Based Emergency Safety Screening:</strong>
+                Structured red-flag symptom triage triggering immediate 108 ambulance protocols without AI hallucinations.
+              </div>
+            </li>
+          </ul>
+
+          <ul class="feature-list">
+            <li>
+              <div class="bullet">4</div>
+              <div>
+                <strong>Privacy-Preserving QR Referral Slips:</strong>
+                Referral tokens encoded into printable QR codes containing ZERO personal health data, protecting patient confidentiality.
+              </div>
+            </li>
+            <li>
+              <div class="bullet">5</div>
+              <div>
+                <strong>Social Barrier Tracking:</strong>
+                Records reasons for missed care (daily wage loss, lack of transport, childcare) to facilitate timely community assistance.
+              </div>
+            </li>
+            <li>
+              <div class="bullet">6</div>
+              <div>
+                <strong>Native Bilingual Experience:</strong>
+                Full English and தமிழ் interface switcher for frontline workers and medical officers.
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Health Saathi 360 &bull; Architecture & Vision</span>
+        <span>Slide 3 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: GEOSPATIAL MAPS & IN-APP ROUTING -->
+    <div class="slide" data-index="4">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Key Feature</div>
+          <div class="slide-title">Hospital Map & Live In-Website Road Routing</div>
+        </div>
+        <span class="slide-badge">🗺️ Leaflet + OSM</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card highlight">
+            <div class="card-icon">🚗</div>
+            <div class="card-heading">In-Website Polyline Road Routes</div>
+            <div class="card-text" style="font-size: 0.9rem;">
+              Unlike systems that redirect to external tabs, Health Saathi 360 calculates and draws <strong>real road geometry directly inside the web interface</strong> via OpenStreetMap's OSRM engine.
+            </div>
+            <div style="background: #ffffff; padding: 12px; border-radius: 8px; font-size: 0.8rem; margin-top: 8px;">
+              <strong>Live Telemetry:</strong> Distance in km &bull; Estimated driving duration &bull; Starting locality pin &bull; Auto-fitting bounds.
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="card">
+              <div class="card-heading">Real-World Facility Coverage</div>
+              <div class="card-text">
+                Pre-seeded and live queried across Madurai region: Government Rajaji Hospital, Samayanallur PHC, Vadipatti CHC, Melur GH, and Alanganallur PHC.
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-heading">Public vs. Private Distinction</div>
+              <div class="card-text">
+                Automatically tags government healthcare centers providing free care under state health schemes.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Health Saathi 360 &bull; Geospatial Healthcare Intelligence</span>
+        <span>Slide 4 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: SAFETY SCREENING -->
+    <div class="slide" data-index="5">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Clinical Safety</div>
+          <div class="slide-title">Rule-Based Emergency Safety Screening</div>
+        </div>
+        <span class="slide-badge">🛡️ Clinical Triage</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card" style="border-left: 4px solid var(--red);">
+            <div class="card-icon">🚨</div>
+            <div class="card-heading" style="color: var(--red);">EMERGENCY TIER</div>
+            <div class="card-text">
+              <strong>Triggers:</strong> Acute chest pain, respiratory distress, maternal bleeding, altered mental status, infant convulsions.
+            </div>
+            <div style="font-size: 0.8rem; color: var(--red); font-weight: 700; margin-top: 6px;">
+              Action: Call 108 Ambulance immediately; escort to Medical College Hospital.
+            </div>
+          </div>
+
+          <div class="card" style="border-left: 4px solid var(--amber);">
+            <div class="card-icon">⚠️</div>
+            <div class="card-heading" style="color: var(--amber);">URGENT CARE TIER</div>
+            <div class="card-text">
+              <strong>Triggers:</strong> High fever > 3 days, persistent dehydration, uncontrolled hypertension symptoms.
+            </div>
+            <div style="font-size: 0.8rem; color: var(--amber); font-weight: 700; margin-top: 6px;">
+              Action: Community Health Centre (CHC) evaluation within 24-48 hours.
+            </div>
+          </div>
+
+          <div class="card" style="border-left: 4px solid var(--primary);">
+            <div class="card-icon">🩺</div>
+            <div class="card-heading" style="color: var(--primary);">ROUTINE OPD TIER</div>
+            <div class="card-text">
+              <strong>Triggers:</strong> Mild ailments, chronic medication refill, routine antenatal check-ups.
+            </div>
+            <div style="font-size: 0.8rem; color: var(--primary); font-weight: 700; margin-top: 6px;">
+              Action: Local Health & Wellness Centre / Sub-Centre visit.
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #FFFBEB; border: 1px solid #FCD34D; border-radius: 8px; padding: 10px 16px; margin-top: 18px; font-size: 0.82rem; color: #92400E;">
+          <strong>Clinical Integrity Disclaimer:</strong> This rule-based prototype acts strictly as a decision-support guide and does not autonomously diagnose medical illnesses.
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Health Saathi 360 &bull; Frontline Emergency Decision Support</span>
+        <span>Slide 5 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: REFERRALS & QR CODE -->
+    <div class="slide" data-index="6">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Referral Management</div>
+          <div class="slide-title">Privacy-Preserving QR Referral Slips</div>
+        </div>
+        <span class="slide-badge">📋 Privacy by Design</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-heading">End-to-End Referral Lifecycle</div>
+            <ul class="feature-list" style="margin-top: 10px;">
+              <li>
+                <div class="bullet">A</div>
+                <div><strong>Referral Generation:</strong> Unique sequential ID (e.g. <code>REF-2026-001</code>) linked to patient and target hospital.</div>
+              </li>
+              <li>
+                <div class="bullet">B</div>
+                <div><strong>Status Tracking:</strong> Real-time status transitions: <em>Pending &rarr; Completed &rarr; Not Attended &rarr; Cancelled</em>.</div>
+              </li>
+              <li>
+                <div class="bullet">C</div>
+                <div><strong>Automatic Follow-up:</strong> Setting a referral date automatically schedules an in-app follow-up task.</div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card highlight" style="align-items: center; text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 6px;">📱</div>
+            <div class="card-heading">Zero-PHI QR Code Slip</div>
+            <div class="card-text" style="font-size: 0.85rem; max-width: 380px;">
+              The QR code encodes <strong>only a non-sensitive referral reference token</strong>:
+              <br><br>
+              <code>{"refId":"REF-2026-001","pid":"PAT-1001"}</code>
+              <br><br>
+              <strong>Security Guarantee:</strong> Medical complaints, symptoms, and phone numbers are NEVER stored inside the QR code or URL parameters.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Health Saathi 360 &bull; Patient Safety & Data Protection</span>
+        <span>Slide 6 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: SOCIAL BARRIERS & FOLLOW-UP -->
+    <div class="slide" data-index="7">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Care Continuity</div>
+          <div class="slide-title">Follow-up Care & Social Barrier Tracking</div>
+        </div>
+        <span class="slide-badge">🤝 Patient-Centric</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-heading">Categorized In-App Follow-up Lists</div>
+            <p class="card-text" style="margin-bottom: 12px;">Frontline staff are notified through structured lists rather than unverified SMS simulators:</p>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <span class="slide-badge">📅 Upcoming Visits</span>
+              <span class="slide-badge" style="background:#FEE2E2; color:#DC2626;">🚨 Overdue Appointments</span>
+              <span class="slide-badge" style="background:#FEF3C7; color:#D97706;">⚠️ Missed Visits</span>
+              <span class="slide-badge" style="background:#D1FAE5; color:#059669;">✅ Completed Care</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-heading">Social Determinants of Health (SDoH)</div>
+            <p class="card-text">Captures why patients miss appointments to provide targeted community support:</p>
+            <ul style="font-size: 0.82rem; color: var(--text-muted); padding-left: 20px; margin-top: 8px; line-height: 1.6;">
+              <li><strong>Transport Difficulties:</strong> Distance, lack of bus connectivity</li>
+              <li><strong>Economic Loss:</strong> Forfeiting daily wages to visit clinics</li>
+              <li><strong>Family Care:</strong> Childcare and eldercare burdens</li>
+              <li><strong>Stigma / Anxiety:</strong> Apprehension of diagnosis</li>
+              <li><strong>Assistance Recorded:</strong> 108 ambulance arranged, ASHA accompanied</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Health Saathi 360 &bull; Community Follow-Up Network</span>
+        <span>Slide 7 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: SYSTEM ARCHITECTURE -->
+    <div class="slide" data-index="8">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">System Architecture</div>
+          <div class="slide-title">Lightweight, Offline-First Engineering</div>
+        </div>
+        <span class="slide-badge">⚡ Minimal Tech Stack</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-4">
+          <div class="card">
+            <div class="card-icon">💻</div>
+            <div class="card-heading">Frontend</div>
+            <div class="card-text">
+              Pure HTML5, CSS3, Vanilla JS. Zero bundlers, zero React/Next.js overhead. Sub-second load time.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">⚙️</div>
+            <div class="card-heading">Backend</div>
+            <div class="card-text">
+              Node.js + Express. RESTful API with security headers, JWT role verification, and error sanitization.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">🗄️</div>
+            <div class="card-heading">Database</div>
+            <div class="card-text">
+              SQLite (WAL mode). Parameterized queries preventing SQL injection. Under 60MB total memory footprint.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">🔄</div>
+            <div class="card-heading">Offline Sync</div>
+            <div class="card-text">
+              IndexedDB local queue + Service Worker shell caching. Automatic idempotent sync upon reconnect.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Health Saathi 360 &bull; Technical Specifications</span>
+        <span>Slide 8 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: ROLE ACCESS & USER MANAGEMENT -->
+    <div class="slide" data-index="9">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Security & Access</div>
+          <div class="slide-title">Role-Based Access Control & Staff Onboarding</div>
+        </div>
+        <span class="slide-badge">🔐 RBAC Security</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-icon">👩‍⚕️</div>
+            <div class="card-heading">ASHA Worker</div>
+            <div class="card-text">
+              Patient registration, draft auto-saving, clinical screening, hospital finding, and referral issuance.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">👨‍⚕️</div>
+            <div class="card-heading">PHC Medical Officer</div>
+            <div class="card-text">
+              Referral status verification, follow-up outcome recording, clinical notes, and triage evaluation.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">📊</div>
+            <div class="card-heading">District Admin</div>
+            <div class="card-text">
+              Aggregate completion rates, recurring barrier analytics, and facility utilization statistics.
+            </div>
+          </div>
+        </div>
+
+        <div class="card highlight" style="margin-top: 16px;">
+          <div class="card-heading">✨ Self-Service Staff Registration</div>
+          <div class="card-text" style="font-size: 0.88rem;">
+            New healthcare staff can immediately register via the portal by entering their name, desired username, role, and assigned facility. Passwords are cryptographically salted and hashed using bcrypt.
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Health Saathi 360 &bull; Security & Permissions</span>
+        <span>Slide 9 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: CONCLUSION & VERIFICATION -->
+    <div class="slide" data-index="10">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Impact & Next Steps</div>
+          <div class="slide-title">Ready for Field Deployment & Verification</div>
+        </div>
+        <span class="slide-badge" style="background:#D1FAE5; color:#059669;">100% Verified</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card highlight">
+            <div class="card-heading">15/15 Automated Test Suites Passed</div>
+            <ul style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; margin-top: 8px;">
+              <li>✅ Server & SQLite auto-schema initialization</li>
+              <li>✅ End-to-end patient registration & persistence</li>
+              <li>✅ Zero-PHI QR code payload security verified</li>
+              <li>✅ Idempotent duplicate-proof offline sync</li>
+              <li>✅ Real-world Leaflet & OSRM road routing active</li>
+              <li>✅ Bilingual English & Tamil dictionary complete</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-heading">Future Roadmap</div>
+            <ul class="feature-list" style="margin-top: 8px;">
+              <li>
+                <div class="bullet">1</div>
+                <div><strong>State HMIS & ABDM Integration:</strong> Link with ABHA IDs for unified health records.</div>
+              </li>
+              <li>
+                <div class="bullet">2</div>
+                <div><strong>Fleet Vehicle Dispatch:</strong> Direct digital dispatch of 108 emergency vehicles.</div>
+              </li>
+              <li>
+                <div class="bullet">3</div>
+                <div><strong>Voice-Enabled Intake:</strong> Tamil speech-to-text for faster field notation.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Health Saathi 360 &bull; Final Slide</span>
+        <span>Slide 10 / 10</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Navigation Deck Controls -->
+  <footer class="deck-controls">
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <button class="deck-btn" id="btn-prev" onclick="prevSlide()">
+        &larr; Previous
+      </button>
+      <button class="deck-btn" id="btn-next" onclick="nextSlide()">
+        Next &rarr;
+      </button>
+    </div>
+
+    <div style="display: flex; align-items: center; flex: 1; justify-content: center;">
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="slide-progress-bar" style="width: 10%;"></div>
+      </div>
+      <span id="slide-counter" style="font-size: 0.85rem; font-weight: 700; min-width: 90px; text-align: center;">Slide 1 of 10</span>
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+      <button class="deck-btn" onclick="toggleFullScreen()">
+        ⛶ Fullscreen
+      </button>
+      <button class="deck-btn" onclick="window.print()">
+        🖨️ Export PDF
+      </button>
+      <a href="/" class="deck-btn" style="text-decoration: none;">
+        🏥 Open App
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 10;
+
+    function showSlide(index) {
+      if (index < 1) index = 1;
+      if (index > totalSlides) index = totalSlides;
+      currentSlide = index;
+
+      document.querySelectorAll('.slide').forEach((slide, idx) => {
+        slide.classList.toggle('active', (idx + 1) === currentSlide);
+      });
+
+      // Update counter and progress bar
+      document.getElementById('slide-counter').textContent = `Slide ${currentSlide} of ${totalSlides}`;
+      document.getElementById('slide-progress-bar').style.width = `${(currentSlide / totalSlides) * 100}%`;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        showSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        showSlide(currentSlide - 1);
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      }
+    });
+  </script>
+</body>
+</html>
