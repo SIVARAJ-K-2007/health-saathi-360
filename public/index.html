@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2E7D6A">
+  <meta name="description" content="Health Saathi 360 - Offline-First Public Healthcare Referral and Follow-Up Management Platform">
+  <title>Health Saathi 360 - Public Healthcare Platform</title>
+
+  <!-- Local Offline Assets -->
+  <link rel="stylesheet" href="/assets/leaflet.css">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div id="app-root">
+    <!-- Desktop Left Sidebar -->
+    <aside class="sidebar" id="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">HS</div>
+        <div class="brand-info">
+          <h1 id="brand-title">Health Saathi 360</h1>
+          <p id="brand-subtitle">Public Healthcare Network</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebar-nav-links">
+        <button class="nav-item active" data-page="dashboard" id="nav-btn-dashboard">
+          <span class="icon">📊</span>
+          <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
+        </button>
+        <button class="nav-item" data-page="patients" id="nav-btn-patients">
+          <span class="icon">👥</span>
+          <span class="nav-label" data-i18n="nav_patients">Patients</span>
+        </button>
+        <button class="nav-item" data-page="register-patient" id="nav-btn-register">
+          <span class="icon">➕</span>
+          <span class="nav-label" data-i18n="nav_register_patient">Register Patient</span>
+        </button>
+        <button class="nav-item" data-page="screening" id="nav-btn-screening">
+          <span class="icon">🛡️</span>
+          <span class="nav-label" data-i18n="nav_screening">Safety Screening</span>
+        </button>
+        <button class="nav-item" data-page="hospitals" id="nav-btn-hospitals">
+          <span class="icon">🏥</span>
+          <span class="nav-label" data-i18n="nav_hospital_map">Hospital Map</span>
+        </button>
+        <button class="nav-item" data-page="matching" id="nav-btn-matching">
+          <span class="icon">🎯</span>
+          <span class="nav-label" data-i18n="nav_facility_matching">Facility Matcher</span>
+        </button>
+        <button class="nav-item" data-page="referrals" id="nav-btn-referrals">
+          <span class="icon">📋</span>
+          <span class="nav-label" data-i18n="nav_referrals">Referrals</span>
+        </button>
+        <button class="nav-item" data-page="followups" id="nav-btn-followups">
+          <span class="icon">⏰</span>
+          <span class="nav-label" data-i18n="nav_followups">Follow-ups</span>
+        </button>
+        <button class="nav-item" data-page="search" id="nav-btn-search">
+          <span class="icon">🔍</span>
+          <span class="nav-label" data-i18n="nav_search">Search Records</span>
+        </button>
+        <button class="nav-item" data-page="admin" id="nav-btn-admin">
+          <span class="icon">📈</span>
+          <span class="nav-label" data-i18n="nav_admin">Admin Analytics</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-badge" id="sidebar-user-badge">
+          <div class="user-avatar" id="sidebar-user-avatar">AS</div>
+          <div class="user-details">
+            <h4 id="sidebar-user-name">Meenakshi (ASHA)</h4>
+            <p id="sidebar-user-role" data-i18n="role_asha">ASHA Health Worker</p>
+          </div>
+        </div>
+        <button class="btn btn-sm btn-outline" id="btn-sign-out" style="width: 100%;">
+          <span>🚪</span> <span data-i18n="sign_out">Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <!-- Topbar Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle" id="btn-mobile-sidebar-toggle" aria-label="Toggle Navigation Menu">
+            ☰
+          </button>
+          <div class="page-headline" id="topbar-page-title">Dashboard</div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Online/Offline Status Indicator -->
+          <div class="status-indicator online" id="network-status-indicator">
+            <span class="dot"></span> <span class="text">Online</span>
+          </div>
+
+          <!-- Pending Offline Queue Badge -->
+          <span class="badge badge-pending" id="offline-queue-badge" style="display: none; cursor: pointer;" title="Click to synchronize now">
+            0 changes
+          </span>
+
+          <!-- Sync Now Button -->
+          <button class="btn btn-sm btn-outline" id="btn-manual-sync" title="Sync pending offline changes">
+            <span>🔄</span> <span class="sync-text" data-i18n="sync_now">Sync Now</span>
+          </button>
+
+          <!-- Language Switcher -->
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="ta">தமிழ்</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Offline Notice Banner -->
+      <div class="offline-banner" id="offline-status-banner" style="display: none;">
+        <span class="banner-text">Operating in Offline Mode. Records are saved locally in IndexedDB.</span>
+        <button class="btn btn-xs btn-primary" onclick="syncOfflineQueueNow(showToast)">
+          Sync Now
+        </button>
+      </div>
+
+      <!-- Main Dynamic Content Container -->
+      <main class="page-container" id="app-content">
+        <!-- Rendered dynamically by app.js router -->
+      </main>
+
+      <!-- Bottom Navigation for Mobile Devices -->
+      <nav class="mobile-bottom-nav">
+        <button class="mobile-nav-btn active" data-page="dashboard">
+          <span class="icon">📊</span>
+          <span data-i18n="nav_dashboard">Dashboard</span>
+        </button>
+        <button class="mobile-nav-btn" data-page="patients">
+          <span class="icon">👥</span>
+          <span data-i18n="nav_patients">Patients</span>
+        </button>
+        <button class="mobile-nav-btn" data-page="hospitals">
+          <span class="icon">🏥</span>
+          <span data-i18n="nav_hospital_map">Map</span>
+        </button>
+        <button class="mobile-nav-btn" data-page="referrals">
+          <span class="icon">📋</span>
+          <span data-i18n="nav_referrals">Referrals</span>
+        </button>
+        <button class="mobile-nav-btn" data-page="followups">
+          <span class="icon">⏰</span>
+          <span data-i18n="nav_followups">Follow-ups</span>
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Global Modal Container -->
+  <div class="modal-overlay" id="global-modal" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Modal Title</h3>
+        <button class="modal-close" id="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Injected modal content -->
+      </div>
+      <div class="modal-footer" id="modal-footer">
+        <button class="btn btn-outline" id="modal-cancel-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- Third-party local scripts -->
+  <script src="/assets/leaflet.js"></script>
+  <script src="/assets/qrcode.min.js"></script>
+
+  <!-- Application Modules -->
+  <script src="/js/translations.js"></script>
+  <script src="/js/offline.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/map.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

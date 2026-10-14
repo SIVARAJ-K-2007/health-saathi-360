@@ -1,0 +1,28 @@
+{
+  "name": "health-saathi-360",
+  "version": "1.0.0",
+  "description": "Offline-First Public Healthcare Platform for ASHA Workers, ANMs, and PHC Staff",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "test": "node scripts/verify.js",
+    "seed": "node server/database.js"
+  },
+  "keywords": [
+    "healthcare",
+    "offline-first",
+    "asha",
+    "public-health",
+    "referrals",
+    "sqlite"
+  ],
+  "author": "Health Saathi 360 Team",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
