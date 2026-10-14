@@ -11,8 +11,12 @@ if (!fs.existsSync(dataDir)) {
 }
 
 const db = new Database(dbPath);
-db.pragma('journal_mode = WAL');
-db.pragma('foreign_keys = ON');
+try {
+  db.pragma('journal_mode = DELETE');
+  db.pragma('foreign_keys = ON');
+} catch (pragmaErr) {
+  console.warn('SQLite pragma warning:', pragmaErr.message);
+}
 
 function initSchema() {
   db.exec(`

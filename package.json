@@ -8,6 +8,9 @@
     "test": "node scripts/verify.js",
     "seed": "node server/database.js"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "keywords": [
     "healthcare",
     "offline-first",
